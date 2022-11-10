@@ -51,19 +51,18 @@ console.log(sql);
   });
 });
 
-app.post('/display-result', function(req, res) {
+app.post('/display_result', function(req, res) {
   var search_maker = req.body.search_maker;
    
   var sql = `SELECT * FROM car WHERE car.manufactor LIKE '${search_maker}'`;
 
-  res.render('search-result', { title: 'Like your car' });
-
 console.log(sql);
-  connection.query(sql, function(err, result) {
+  connection.query(sql, function(err, sql_result) {
     if (err) {
       res.send(err)
       return;
     }
+    res.render('search_result', { title: 'akgjasgcdas' , searchresult:sql_result});
   });
 });
 

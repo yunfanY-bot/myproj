@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>Used Car Platform</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+ </head>
+
+ <body>
+   <div class="container mt-4">
+       <h2>Here is the search result</h2>
+
+       <div class="card">
+       <div class="card-body">
+           <div class="card-body">
+               <div class="table-responsive">
+                   <table class="table table-bordered">
+                       <tr>
+                           <th>car_id</th>
+                           <th>model</th>
+                           <th>year</th>
+                           <th>price</th>
+                           <th>transmission</th>
+                           <th>mileage</th>
+                           <th>fuelType</th>
+                           <th>mpg</th>
+                           <th>engineSize</th>
+                           <th>manufactor</th>
+                           <th>listing_user_id</th>
+                       </tr>
+                       <%
+                       if(searchresult.length > 0)
+                       {
+                       searchresult.forEach(function(result){
+                       %>
+                           <tr>
+                               <td><%= result.car_id %></td>
+                               <td><%= result.model %></td>
+                               <td><%= result.year %></td>
+                               <td><%= result.price %></td>
+                               <td><%= result.transmission %></td>
+                               <td><%= result.mileage %></td>
+                               <td><%= result.fuelType %></td>
+                               <td><%= result.mpg %></td>
+                               <td><%= result.engineSize %></td>
+                               <td><%= result.manufactor %></td>
+                               <td><%= result.listing_user_id %></td>
+                               <td>
+                           </tr>
+                       <%
+                       });
+                       } else {
+                       %>
+                           <tr>
+                               <td colspan="5">No Data Found</td>
+                           </tr>
+                       <% } %>
+                   </table>
+               </div>
+           </div>
+   </div>
+ </div>
+ </body>
