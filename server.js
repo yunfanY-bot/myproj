@@ -24,20 +24,22 @@ app.use(express.static(__dirname + '../public'));
 
 /* GET home page, respond by rendering index.ejs */
 app.get('/', function(req, res) {
-  res.render('index', { title: 'Like your car' });
+  res.render('search', { title: 'search for cars' });
 });
 
 app.get('/success', function(req, res) {
-      res.send({'message': 'User ID: 0 liked car_id: ' + '${netid}'});
+  res.send({'message': 'User ID: 0 liked car_id: ' + '${car_id}'});
 });
  
+app.get('/display-like', function(req, res) {
+  res.render('display-like', { title: 'Like your car' });
+});
+
 // this code is executed when a user clicks the form submit button
-app.post('/mark', function(req, res) {
-  var netid = req.body.netid;
+app.post('/like', function(req, res) {
+  var car_id = req.body.car_id;
    
-  var sql = `INSERT INTO likes (user_id, car_id) VALUES (0, '${netid}')`;
-
-
+  var sql = `INSERT INTO likes (user_id, car_id) VALUES (0, '${car_id}')`;
 
 console.log(sql);
   connection.query(sql, function(err, result) {
@@ -45,7 +47,23 @@ console.log(sql);
       res.send(err)
       return;
     }
-    res.redirect('/success');
+    res.redirect('/display-like');
+  });
+});
+
+app.post('/display-result', function(req, res) {
+  var search_maker = req.body.search_maker;
+   
+  var sql = `SELECT * FROM car WHERE car.manufactor LIKE '${search_maker}'`;
+
+  res.render('search-result', { title: 'Like your car' });
+
+console.log(sql);
+  connection.query(sql, function(err, result) {
+    if (err) {
+      res.send(err)
+      return;
+    }
   });
 });
 
