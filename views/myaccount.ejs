@@ -12,11 +12,10 @@
         <div class="container mt-4">
             <div class="card">
                 <h4>
-                    <%= like_result[i].user_id %>
                     <%= like_result[i].car_id %>
                 </h4>
                 <a href="somepath/">Detail</a>
-                <a href="somepath/">Like this car</a>
+                <a href="unlike_car/?car_id=<%= like_result[i].car_id %>">UnLike this car</a>
                 <a href="somepath/">Contact seller</a>
                 <a href="somepath/">Buy</a>
             </div>

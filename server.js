@@ -43,6 +43,35 @@ app.get('/useraccount', function(req, res) {
 
 });
 
+app.get('/useraccount/unlike_car', (req, res) => {
+    var car_id = req.query.car_id;
+    var delete_like_query = `DELETE FROM likes WHERE likes.user_id = ${user_id} AND likes.car_id = ${car_id};`;
+
+    console.log(delete_like_query);
+    connection.query(delete_like_query, function(err, sql_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+    });
+    res.redirect('/useraccount');
+
+})
+
+app.get('/unlike_car', (req, res) => {
+    var car_id = req.query.car_id;
+    var delete_like_query = `DELETE FROM likes WHERE likes.user_id = ${user_id} AND likes.car_id = ${car_id};`;
+
+    console.log(delete_like_query);
+    connection.query(delete_like_query, function(err, sql_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+    });
+    res.redirect('/useraccount');
+
+})
 
 app.post('/', function(req, res) {
     user_id = req.body.email;
