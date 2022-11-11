@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>Used Car Platform</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+ </head>
+
+ <body>
+ <h1><a href="useraccount/">My Account</a></h1>
+       <h2>Here is the search result</h2>
+               <% for(var i=0; i < searchresult.length; i++) { %>
+                   <div class="container mt-4">
+                       <div class="card">
+                           <h4>
+                               <%= searchresult[i].year %>
+                               <%= searchresult[i].manufactor %>
+                               <%= searchresult[i].model %>
+                           </h4>
+
+                           <p>price: <%= searchresult[i].price %></p>
+                           <a href="somepath/">Detail</a>
+                           <a href="somepath/">Like this car</a>
+                           <a href="somepath/">Contact seller</a>
+                           <a href="somepath/">Buy</a>
+                       </div>
+                   </div>
+               <% } %>
+ </body>
