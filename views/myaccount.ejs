@@ -7,6 +7,8 @@
 <body>
     <h1>account detail</h1>
     <h2>account username: <%= user_id%></h2>
+    <a href="/update_contact">update contact info</a>
+
     <h2>cars you liked</h2>
     <% for(var i=0; i < like_result.length; i++) { %>
         <div class="container mt-4">
@@ -15,7 +17,7 @@
                     <%= like_result[i].car_id %>
                 </h4>
                 <a href="somepath/">Detail</a>
-                <a href="unlike_car/?car_id=<%= like_result[i].car_id %>">UnLike this car</a>
+                <a href="unlike_car/?car_id=<%= like_result[i].car_id %>">UnLike</a>
                 <a href="somepath/">Contact seller</a>
                 <a href="somepath/">Buy</a>
             </div>

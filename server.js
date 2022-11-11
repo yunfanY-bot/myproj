@@ -13,6 +13,8 @@ connection.connect;
 
 
 var app = express();
+
+// should use cookie
 var user_id = 0;
 
 // set up ejs view engine 
@@ -23,9 +25,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '../public'));
 
-/* GET home page, respond by rendering index.ejs */
 app.get('/', function(req, res) {
-  res.render('index', { title: 'search for cars' });
+    res.redirect('/login');
+});
+
+app.get('/login', function(req, res) {
+    res.render('login', { title: 'login' });
+});
+
+app.get('/search', function(req, res) {
+    res.render('search', {user_id: user_id})
+});
+
+app.get('/update_contact', function(req, res) {
+    res.render('update_contact', {user_id: user_id})
 });
 
 app.get('/useraccount', function(req, res) {
@@ -43,21 +56,6 @@ app.get('/useraccount', function(req, res) {
 
 });
 
-app.get('/useraccount/unlike_car', (req, res) => {
-    var car_id = req.query.car_id;
-    var delete_like_query = `DELETE FROM likes WHERE likes.user_id = ${user_id} AND likes.car_id = ${car_id};`;
-
-    console.log(delete_like_query);
-    connection.query(delete_like_query, function(err, sql_result) {
-        if (err) {
-            res.send(err)
-            return;
-        }
-    });
-    res.redirect('/useraccount');
-
-})
-
 app.get('/unlike_car', (req, res) => {
     var car_id = req.query.car_id;
     var delete_like_query = `DELETE FROM likes WHERE likes.user_id = ${user_id} AND likes.car_id = ${car_id};`;
@@ -73,9 +71,23 @@ app.get('/unlike_car', (req, res) => {
 
 })
 
-app.post('/', function(req, res) {
+app.get('/like_car', (req, res) => {
+    var car_id = req.query.car_id;
+    var add_like_query = `INSERT INTO likes(user_id, car_id) VALUES (${user_id}, ${car_id});`;
+
+    console.log(add_like_query);
+    connection.query(add_like_query, function(err, sql_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+        res.redirect('/useraccount');
+    });
+})
+
+app.post('/login', function(req, res) {
     user_id = req.body.email;
-    res.render('search', {user_id: user_id})
+    res.redirect('/search')
 });
 
 
@@ -94,6 +106,20 @@ console.log(sql);
   });
 });
 
+app.post('/new_contact', function(req, res) {
+    var new_contact = req.body.new_contact;
+
+    var update_contact_query = `UPDATE user SET contact_info = '${new_contact}' WHERE user_id = ${user_id}`;
+
+    console.log(update_contact_query);
+    connection.query(update_contact_query, function(err, sql_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+        res.redirect('/useraccount');
+    });
+});
 
 app.listen(80, function () {
     console.log('Node app is running on port 80');
