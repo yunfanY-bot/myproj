@@ -29,7 +29,18 @@ app.get('/', function(req, res) {
 });
 
 app.get('/useraccount', function(req, res) {
-  res.render('myaccount', { title: 'search for cars' });
+    var query_like = `SELECT * FROM likes WHERE likes.user_id = ${user_id}`;
+    var like_result;
+    console.log(query_like);
+    connection.query(query_like, function(err, sql_like_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+        res.render('myaccount', { title: 'search for cars', like_result: sql_like_result, user_id: user_id});
+        like_result = sql_like_result;
+    });
+
 });
 
 
