@@ -51,10 +51,22 @@ app.get('/useraccount', function(req, res) {
                                                                                                 WHERE comment_status = 0
                                                                                                 ) AND buyer_id = ${user_id}
                                                                     ) as sub ON T1.transaction_id = sub.transaction_id2;`;
-    var query_rate1 =
+/*    var query_rate1 =
         `SELECT avg(rating) as avg_rating
     FROM rate
-    WHERE ratee_id = ${user_id}`;
+    WHERE ratee_id = ${user_id}`;*/
+    var query_rate1 =
+        `SELECT sub.id, SUM(sub.sum_rating)/SUM(sub.num_rate) as avg_rating
+        FROM (SELECT r1.rater_id as id, SUM(r1.rating) as sum_rating, COUNT(r1.rate_id) as num_rate
+           FROM used_car.rate r1
+           GROUP BY r1.rater_id
+           UNION
+           SELECT r2.ratee_id as id, SUM(r2.rating) as sum_rating, COUNT(r2.rate_id) as num_rate
+           FROM used_car.rate r2
+           GROUP BY r2.ratee_id) as sub
+        WHERE id = ${user_id}
+        GROUP BY sub.id
+        ORDER BY sub.id`
 
     console.log(query_like);
     connection.query(query_like, function(err, sql_like_result) {
