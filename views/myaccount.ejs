@@ -1,28 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Used Car Platform</title>
     <meta charset="UTF-8">
-    <title>My account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
+
 <body>
     <h1>account detail</h1>
     <h2>account username: <%= user_id%></h2>
     <a href="/update_contact">update contact info</a>
 
+    <h2>Your rating: <%= avg_rate_result[0].avg_rating %></h2>
+
+    <div class="container mt-4">
     <h2>cars you liked</h2>
     <% for(var i=0; i < like_result.length; i++) { %>
-        <div class="container mt-4">
-            <div class="card">
+        <div class="card">
+            <div class="card-body">
                 <h4>
                     <%= like_result[i].car_id %>
                 </h4>
-                <a href="somepath/">Detail</a>
-                <a href="unlike_car/?car_id=<%= like_result[i].car_id %>">UnLike</a>
-                <a href="somepath/">Contact seller</a>
-                <a href="somepath/">Buy</a>
+                <a href="somepath/">Detail</a> <br>
+                <a href="unlike_car/?car_id=<%= like_result[i].car_id %>">UnLike</a> <br>
+                <a href="somepath/">Contact seller</a> <br>
+                <a href="somepath/">Buy</a> <br>
             </div>
         </div>
     <% } %>
+    </div>
 
+    <div class="container mt-4">
+        <h2>Please comment your trade</h2>
+        <% for(var i=0; i < uncommented_result.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>
+                            Transaction ID:
+                            <%= uncommented_result[i].transaction_id %>
+                        </h4>
+                        <h4>
+                            Buy date
+                            <%= uncommented_result[i].buy_date %>
+                        </h4>
+                        <a href="somepath/">Contact seller</a> <br>
+                        <a href="somepath/">Comment</a> <br>
+                    </div>
+                </div>
+        <% } %>
+    </div>
 </body>
 </html>

@@ -43,17 +43,45 @@ app.get('/update_contact', function(req, res) {
 
 app.get('/useraccount', function(req, res) {
     var query_like = `SELECT * FROM likes WHERE likes.user_id = ${user_id}`;
-    var like_result;
+    var query_uncommented = `SELECT transaction_id, price, buy_date, transaction_id2
+                                FROM used_car.transaction as T1 JOIN (SELECT *
+                                                                    FROM used_car.buy
+                                                                    WHERE transaction_id2 IN (SELECT transaction_id
+                                                                                                FROM used_car.transaction
+                                                                                                WHERE comment_status = 0
+                                                                                                ) AND buyer_id = ${user_id}
+                                                                    ) as sub ON T1.transaction_id = sub.transaction_id2;`;
+    var query_rate1 =
+        `SELECT avg(rating) as avg_rating
+    FROM rate
+    WHERE ratee_id = ${user_id}`;
+
     console.log(query_like);
     connection.query(query_like, function(err, sql_like_result) {
         if (err) {
             res.send(err)
             return;
         }
-        res.render('myaccount', { title: 'search for cars', like_result: sql_like_result, user_id: user_id});
-        like_result = sql_like_result;
+        console.log(query_like);
+        connection.query(query_uncommented, function(err, sql_uncommented_result) {
+            if (err) {
+                res.send(err)
+                return;
+            }
+            console.log(query_like);
+            connection.query(query_rate1, function(err, sql_rate1_result) {
+                if (err) {
+                    res.send(err)
+                    return;
+                }
+                res.render('myaccount', { title: 'search for cars',
+                    like_result: sql_like_result,
+                    avg_rate_result: sql_rate1_result,
+                    uncommented_result: sql_uncommented_result,
+                    user_id: user_id});
+            });
+        });
     });
-
 });
 
 app.get('/unlike_car', (req, res) => {
@@ -69,6 +97,20 @@ app.get('/unlike_car', (req, res) => {
     });
     res.redirect('/useraccount');
 
+})
+
+app.get('/useraccount/unlike_car', (req, res) => {
+    var car_id = req.query.car_id;
+    var delete_like_query = `DELETE FROM likes WHERE likes.user_id = ${user_id} AND likes.car_id = ${car_id};`;
+
+    console.log(delete_like_query);
+    connection.query(delete_like_query, function(err, sql_result) {
+        if (err) {
+            res.send(err)
+            return;
+        }
+    });
+    res.redirect('/useraccount');
 })
 
 app.get('/like_car', (req, res) => {
